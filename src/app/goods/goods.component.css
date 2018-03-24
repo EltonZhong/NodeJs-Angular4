@@ -1,0 +1,27 @@
+.card-header
+{
+    background:#333;
+    padding:12px 24px;
+    color:#fff;
+    border-radius:2px;
+}
+.card-body
+{
+    
+    padding:12px 24px; 
+}
+.card
+{
+    
+    margin:12px auto;
+}
+.out
+{
+    
+    border:1px solid #3e1e1e;
+}
+.icon i
+{
+    margin:8px 8px;
+    font-size:24px;
+}

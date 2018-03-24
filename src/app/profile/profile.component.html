@@ -1,0 +1,96 @@
+<div>
+<form class="col-md-4">
+    <button (click)="clickBtn(username.value, email.value, description.value)" class="btn btn-default btn-danger floatleft">{{buttonContent}}</button>
+
+    <div class="profile">
+        <div class="header">{{currentProfile.status==1? "Customer" : currentProfile.status == 1? "Admin": "Seller"}}</div>
+        <div class="header">Joined at
+            <strong>{{currentProfile.createdAt}}</strong>
+        </div>
+        <div class="avatar">
+            <img height="150" width="150" src="http://www.iconninja.com/files/929/296/21/headset-person-man-avatar-support-male-young-icon.svg"
+                alt="Avatar">
+        </div>
+        <label class="btn btn-xs btn-default btn-primary ma">Email :</label>
+        <input class="name" #email value="{{currentProfile.email}}" [attr.disabled]="!isEditMode ? '' : null">
+        <label class="btn btn-xs btn-default btn-primary ma">Name :</label>
+        <input class="name" #username value="{{currentProfile.username}}" [attr.disabled]="!isEditMode ? '' : null">
+        <div class="separateName"></div>
+        <label>description:</label>
+        <textarea class="description" #description [attr.disabled]="isEditMode?null:''">
+            {{currentProfile.description}}
+        </textarea>
+    </div>
+</form>
+<div class="container" class="col-md-8">
+    <div class="page-header text-center">
+        <h1 id="timeline">Timeline 2.0</h1>
+    </div>
+    <ul class="timeline">
+        <li>
+            <div class="timeline-badge primary">
+                <a>
+                    <i class="glyphicon glyphicon-record" rel="tooltip" title="11 hours ago via Twitter" id=""></i>
+                </a>
+            </div>
+            <div class="timeline-panel">
+                <div class="timeline-heading">
+                    <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
+
+                </div>
+                <div class="timeline-body">
+                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris,
+                        paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis
+                        mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris
+                        qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis
+                        eu num gostis.</p>
+
+                </div>
+
+                <div class="timeline-footer">
+                    <a>
+                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                    </a>
+                    <a>
+                        <i class="glyphicon glyphicon-share"></i>
+                    </a>
+                    <a class="pull-right">Continuar Lendo</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="timeline-inverted">
+            <div class="timeline-badge primary">
+                <a>
+                    <i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i>
+                </a>
+            </div>
+            <div class="timeline-panel">
+                <div class="timeline-heading">
+                    <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
+
+                </div>
+                <div class="timeline-body">
+                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris,
+                        paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis
+                        mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris
+                        qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis
+                        eu num gostis.</p>
+
+                </div>
+
+                <div class="timeline-footer">
+                    <a>
+                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                    </a>
+                    <a>
+                        <i class="glyphicon glyphicon-share"></i>
+                    </a>
+                    <a class="pull-right">Continuar Lendo</a>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+</div>
+</div>
