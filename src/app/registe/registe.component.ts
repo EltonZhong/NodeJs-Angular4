@@ -57,6 +57,10 @@ export class RegisteComponent {
           }
           console.log(this.form);
         };
+        if (!this.form.value.email.includes('@')) {
+          alert('Email should be like "example@a.com"')
+          return;
+        }
         console.log('registe...')
         console.log(this.form.value)
         this.http.post("/api/users", {

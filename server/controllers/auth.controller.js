@@ -59,7 +59,7 @@ export function getUserId(req) {
   try {
     return jwt.verify(req.cookies.token, config.jwtSecret).id
   } catch (e) {
-    return undefined;
+    throw new Error('Not login')
   }
 }
 

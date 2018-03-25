@@ -105,15 +105,16 @@ GoodSchema.statics = {
      */
 
     list({ user_id = undefined, limit = 50, type } = {}) {
+        type = Number(type);
         switch (type) {
             case FETCH_TYPE.BOUGHT:
-                return this.find({buyer: user_id}).sort({soldAt: -1}).exec()
+                return this.find({buyer: user_id}).sort({soldAt: -1}).populate('seller').populate('buyer').exec()
             case FETCH_TYPE.ALL_ON_SALE:
-                return this.find({status: ON_SALE}).sort({createdAt: -1}).exec()
+                return this.find({status: ON_SALE}).sort({createdAt: -1}).populate('seller').populate('buyer').exec()
             case FETCH_TYPE.SELL:
-                return this.find({seller: user_id}).sort({createdAt: -1}).exec()
+                return this.find({seller: user_id}).sort({createdAt: -1}).populate('seller').populate('buyer').exec()
             default:
-                return this.find()
+                return this.find().populate('seller').populate('buyer')
                     .sort({ createdAt: -1 })
                     .limit(+limit)
                     .exec();

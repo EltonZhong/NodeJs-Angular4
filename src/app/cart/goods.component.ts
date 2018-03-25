@@ -11,11 +11,11 @@ import { Router } from '@angular/router';
  * goods page for seller
  */
 @Component({
-  selector: 'goods',
+  selector: 'cart',
   templateUrl: './goods.component.html',
   styleUrls: ['./goods.component.css']
 })
-export class GoodsComponent implements OnInit {
+export class CartComponent implements OnInit {
   currentProfile: any;
   http: HttpClient
   state: AppState;
@@ -26,6 +26,7 @@ export class GoodsComponent implements OnInit {
   disabled: boolean;
   route: Router;
   goodsList: Array<any>;
+  money: Number
 
   constructor(
     http: HttpClient,
@@ -55,13 +56,14 @@ export class GoodsComponent implements OnInit {
       "SELL": 1,
       "ALL_ON_SALE": 2
     }
+    this.money = 0;
     this.disabled = true;
-    this.buttonContent = "Edit";
-    this.isEditMode = false;
-    this.http.get("/api/goods?type=1", {
+    this.http.get("/api/users/cart", {
     })
       .subscribe({
-        next: (va: any) => {
+        next: (resp: any) => {
+          console.log(resp)
+          let va = resp.cart;
           if (!va) {
             this.route.navigate(["/login"]);
           }
@@ -70,6 +72,7 @@ export class GoodsComponent implements OnInit {
           this.goodsList.forEach(good => {
             good.href = '/goods/' + good._id;
             good.status = good.status==1? "onSale": "Sold to" + good.buyer.username
+            this.money += good.price;
           })
           // get new data
         }, error: (errors) => {

@@ -36,6 +36,7 @@ export class AddGoodsComponent {
       this.apollo = apollo;  
       this.currentProfile = {}
       this.http = http
+      this.router = router;
   }
   
     ngOnInit() {
@@ -65,9 +66,9 @@ export class AddGoodsComponent {
         .subscribe({
             next: (va) => {
               // get new data      
-              console.log(va);
+              this.router.navigate(['goods'])
             }, error: (errors) => {
-              alert('addGoods failed, username might be used')
+              alert('addGoods failed, username might be used, or you did not login')
             }
           });
     }

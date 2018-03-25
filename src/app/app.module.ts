@@ -24,6 +24,8 @@ import {
 } from '@angular/material';
 import 'hammerjs';
 import { CookieService } from 'ngx-cookie-service';
+import { CommonModule } from "@angular/common";
+
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -41,6 +43,8 @@ import { LoginComponent } from './login'
 import { RegisteComponent } from './registe'
 import {GoodsComponent} from './goods/goods.component'
 import {AddGoodsComponent} from './addGoods/addGoods.component'
+import {MarketComponent} from './market/goods.component'
+import {CartComponent} from './cart/goods.component'
 //import { angularProfileCard } from '../../components/main-profile/index';
 import { NoContentComponent } from './no-content';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -75,12 +79,15 @@ type StoreType = {
     LoginComponent,
     RegisteComponent,
     GoodsComponent,
-    AddGoodsComponent
+    AddGoodsComponent,
+    MarketComponent,
+    CartComponent
   ],
   /**
    * Import Angular's modules.
    */
   imports: [
+    CommonModule,
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,

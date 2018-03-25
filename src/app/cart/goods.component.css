@@ -41,3 +41,10 @@
     text-align: center;
     color: brown;
 }
+
+.wid {
+    width: 100%
+}
+.mar {
+    margin-right: 30px
+}

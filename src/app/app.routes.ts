@@ -7,18 +7,22 @@ import { LoginComponent } from './login'
 import { RegisteComponent } from './registe'
 import { NoContentComponent } from './no-content';
 import { GoodsComponent } from './goods/goods.component'
-import {AddGoodsComponent} from './addGoods';
+import { AddGoodsComponent } from './addGoods';
 import { DataResolver } from './app.resolver';
+import { MarketComponent } from './market/goods.component'
+import { CartComponent } from './cart/goods.component'
 
 export const ROUTES: Routes = [
-  { path: '',      component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'posts', loadChildren: './posts#PostsModule' },
   { path: 'profile', component: ProfileComponent },
   { path: 'profile/:id', component: ProfileComponent },
   { path: 'react', component: ReactComponent },
-  { path: 'login', component: LoginComponent},
-  { path: 'registe', component: RegisteComponent},
-  { path: 'addGoods', component: AddGoodsComponent},
-  { path: 'goods', component: GoodsComponent},
-  { path: '**',    component: NoContentComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'registe', component: RegisteComponent },
+  { path: 'addGoods', component: AddGoodsComponent },
+  { path: 'market', component: MarketComponent },
+  { path: 'cart', component: CartComponent },
+  { path: 'goods', component: GoodsComponent },
+  { path: '**', component: NoContentComponent },
 ];

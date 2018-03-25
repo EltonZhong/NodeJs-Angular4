@@ -29,6 +29,9 @@ import { CookieService } from 'ngx-cookie-service';
         <a class="links" [routerLink]="['/registe']">registe</a>
         <a class="links" [routerLink]="['/goods']">goods</a>
         <a class="links" [routerLink]="['/profile']">profile</a>
+        <a class="links" [routerLink]="['/addGoods']">Add goods!</a>
+        <a class="links" [routerLink]="['/market']">Market</a>
+        <a class="links" [routerLink]="['/cart']">Cart</a>
         <a class="links" href="/api/graphql">GraphQL browser</a>
       </mat-toolbar>
     </header>
@@ -69,6 +72,7 @@ export class AppComponent implements OnInit {
           }, error: (errors) => {
               console.log('there was an error sending the query', errors);
               console.log("login failed")
+              this.router.navigate(['login'])
           }
       });
 

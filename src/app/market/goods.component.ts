@@ -6,16 +6,18 @@ import { AppState } from '../app.service';
 import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 /**
  * goods page for seller
  */
 @Component({
-  selector: 'goods',
+  selector: 'MarketComponent',
   templateUrl: './goods.component.html',
   styleUrls: ['./goods.component.css']
 })
-export class GoodsComponent implements OnInit {
+export class MarketComponent implements OnInit {
   currentProfile: any;
   http: HttpClient
   state: AppState;
@@ -32,7 +34,8 @@ export class GoodsComponent implements OnInit {
     cookies: CookieService,
     state: AppState,
     formBuilder: FormBuilder,
-    route: Router
+    route: Router,
+    private sanitizer: DomSanitizer
   ) {
     this.currentProfile = {};
     this.cookies = cookies;
@@ -47,9 +50,10 @@ export class GoodsComponent implements OnInit {
       ]]
     });
     this.route = route;
+    this.sanitizer = sanitizer;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const FETCH_TYPE = {
       "BOUGHT": 0,
       "SELL": 1,
@@ -58,7 +62,14 @@ export class GoodsComponent implements OnInit {
     this.disabled = true;
     this.buttonContent = "Edit";
     this.isEditMode = false;
-    this.http.get("/api/goods?type=1", {
+    await this.http.get("api/users/profile", {}).subscribe({
+      next: (resp: any) => {
+        this.currentProfile = resp;
+        console.log(this.currentProfile)
+      }
+    })
+    
+    this.http.get("/api/goods?type=2", {
     })
       .subscribe({
         next: (va: any) => {
@@ -69,8 +80,16 @@ export class GoodsComponent implements OnInit {
           this.goodsList = va;
           this.goodsList.forEach(good => {
             good.href = '/goods/' + good._id;
-            good.status = good.status==1? "onSale": "Sold to" + good.buyer.username
+            good.status = good.status==1? "onSale": "Sold to" + good.buyer.username;
+            good.imgstyle = good.imgSrc;
+            this.sanitizer.bypassSecurityTrustStyle(good.imgstyle)
+            if (this.currentProfile.cart.includes(good._id)) {
+              good.isFavorite = true;
+            } else {
+              good.isFavorite = false;
+            }
           })
+          console.log(this.goodsList)
           // get new data
         }, error: (errors) => {
           console.log('there was an error sending the query', errors);
@@ -80,22 +99,21 @@ export class GoodsComponent implements OnInit {
 
   }
 
-  clickBtn(username, email, description) {
-    username = username.trim();
-    this.isEditMode = !this.isEditMode;
-    this.buttonContent = this.isEditMode ? "Submit" : "Edit";
+
+
+  addToCart(_id) {
     if (!this.isEditMode) {
-      this.currentProfile.description = description;
-      let needRefresh = this.currentProfile.username !== username;
-      this.currentProfile.username = username;
-      this.currentProfile.email = email
-      console.log(this.currentProfile)
-      this.http.put("/api/users/" + this.currentProfile._id, this.currentProfile).subscribe({
-        next: (resp) => {
+      this.http.patch("/api/users/addToCart", {_id: _id}).subscribe({
+        next: (resp: any) => {
           console.log(resp);
-          if (needRefresh) {
-            this.route.navigate(["/login"]);
-          }
+          this.goodsList.forEach(good => {
+            if (resp.cart.includes(good._id)) {
+              good.isFavorite = true;
+            } else {
+              good.isFavorite = false;
+            }
+          })
+          alert("add to cart success")
         },
         error: () => { }
       })

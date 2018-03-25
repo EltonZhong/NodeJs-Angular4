@@ -13,7 +13,10 @@ router.route('/')
   .post(validate(paramValidation.createUser), userCtrl.create);
 
 router.route('/profile').get(userCtrl.profile)
-
+router.route('/cart').get(userCtrl.cart)
+router.route("/addToCart")
+  .patch(userCtrl.addToCart)
+  
 router.route('/:userId')
   /** GET /api/users/:userId - Get user */
   .get(userCtrl.get)
@@ -24,6 +27,8 @@ router.route('/:userId')
   /** DELETE /api/users/:userId - Delete user */
   .delete(userCtrl.remove);
 
+
+    
 /** Load user when API with userId route parameter is hit */
 router.param('userId', userCtrl.load);
 

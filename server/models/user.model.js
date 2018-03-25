@@ -11,11 +11,13 @@ import APIError from '../helpers/APIError';
 const CUSTOMER = 3
 const SELLER = 2
 const SUPER_USER = 1
+const Schema = mongoose.Schema;
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    index: {unique: true}
+    index: { unique: true }
   },
   email: {
     type: String,
@@ -36,7 +38,12 @@ const UserSchema = new mongoose.Schema({
   description: {
     type: String,
     default: ''
-  }
+  },
+  cart: [{
+    type: Schema.Types.ObjectId,
+    default: [],
+    ref: "Good"
+  }]
 });
 
 /**
@@ -73,8 +80,20 @@ UserSchema.statics = {
       });
   },
 
-  findByName: function(name) {
-    return this.find({"username": name}).exec()
+  getCart(id) {
+    return this.findById(id).populate("cart")
+      .exec()
+      .then((user) => {
+        if (user) {
+          return user;
+        }
+        const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
+        return Promise.reject(err);
+      });
+  },
+
+  findByName: function (name) {
+    return this.find({ "username": name }).exec()
   },
 
   /**
