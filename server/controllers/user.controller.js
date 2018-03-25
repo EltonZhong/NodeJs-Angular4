@@ -107,9 +107,6 @@ function addToCart(req, res, next) {
   if (req.cookies.token) {
     let decoded = jwt.verify(req.cookies.token, config.jwtSecret);
     User.get(decoded.id).then(user => {
-      console.log(user.cart)
-      console.log('121"')
-      console.log(req.body._id)
       if (!user.cart.toString().includes(req.body._id)) {
         user.cart.push(req.body._id);
         user.save().then(error => {
@@ -124,4 +121,26 @@ function addToCart(req, res, next) {
   }
 }
 
-export default { load, get, create, update, list, remove, profile, addToCart , cart};
+function removeFromCart(req, res, next) {
+  if (req.cookies.token) {
+    let decoded = jwt.verify(req.cookies.token, config.jwtSecret);
+    User.get(decoded.id).then(user => {
+      console.log(user)
+      console.log(1111)
+      if (user.cart.toString().includes(req.body._id)) {
+        user.cart = user.cart.filter(good_id => {
+          return req.body._id !== good_id.toString()
+        });
+        user.save().then(error => {
+          return res.json(user);
+        })
+      } else {
+        return res.json(user)
+      }
+    })
+  } else {
+    throw Error('not login')
+  }
+}
+
+export default { load, get, create, update, list, remove, profile, addToCart , cart, removeFromCart};

@@ -26,7 +26,7 @@ export class CartComponent implements OnInit {
   disabled: boolean;
   route: Router;
   goodsList: Array<any>;
-  money: Number
+  money: number
 
   constructor(
     http: HttpClient,
@@ -74,13 +74,30 @@ export class CartComponent implements OnInit {
             good.status = good.status==1? "onSale": "Sold to" + good.buyer.username
             this.money += good.price;
           })
-          // get new data
+        // get new data
         }, error: (errors) => {
           console.log('there was an error sending the query', errors);
           console.log("login failed")
         }
       });
+  }
 
+  goToMarket() {
+    this.route.navigate(['market']);
+  }
+
+  remove(_id) {
+    this.http.patch("/api/users/removeFromCart", {_id: _id}).subscribe({
+      next: (resp: any) => {
+        console.log(this.goodsList)
+        console.log(_id)
+        this.money = this.money - this.goodsList.find(a => a._id === _id).price;
+        this.goodsList = this.goodsList.filter(good => {return good._id !== _id});
+        console.log(this.goodsList)
+        alert("success")
+      },
+      error: () => { }
+    })
   }
 
   clickBtn(username, email, description) {
