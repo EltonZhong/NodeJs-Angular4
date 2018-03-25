@@ -22,6 +22,7 @@ export class GoodsComponent implements OnInit {
   form: FormGroup;
   disabled: boolean;
   route: Router;
+  goodsList: Array<any>;
 
   constructor(
     http: HttpClient,
@@ -46,20 +47,24 @@ export class GoodsComponent implements OnInit {
   }
 
   ngOnInit() {
+    const FETCH_TYPE = {
+      "BOUGHT": 0,
+      "SELL": 1,
+      "ALL_ON_SALE": 2
+    }
     this.disabled = true;
     this.buttonContent = "Edit";
     this.isEditMode = false;
-    this.http.get("/api/users/profile", {
+    this.http.get("/api/goods?type=1", {
     })
       .subscribe({
           next: (va: any) => {
               if (!va) {
                 this.route.navigate(["/login"]);
               }
+              console.log(va);
+              this.goodsList = va;
               // get new data
-              this.state.set("loginStatus", va.status);
-              this.state.set("username", va.username)
-              this.currentProfile = va;
           }, error: (errors) => {
               console.log('there was an error sending the query', errors);
               console.log("login failed")
@@ -86,8 +91,6 @@ export class GoodsComponent implements OnInit {
         },
         error: () => {}
       })
-
     }
   }
-  
 }

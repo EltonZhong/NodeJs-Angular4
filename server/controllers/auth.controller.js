@@ -18,7 +18,7 @@ function login(req, res, next) {
   // Idea here was to show how jwt works with simplicity
   if (req.body.token) {
     let decoded = jwt.verify(req.body.token, config.jwtSecret);
-    User.get(decoded.id).then(user => {
+    return User.get(decoded.id).then(user => {
       return res.json(user)
     })
   }
@@ -55,4 +55,12 @@ function getRandomNumber(req, res) {
   });
 }
 
-export default { login, getRandomNumber };
+export function getUserId(req) {
+  try {
+    return jwt.verify(req.cookies.token, config.jwtSecret).id
+  } catch (e) {
+    return undefined;
+  }
+}
+
+export default { login, getRandomNumber, getUserId };

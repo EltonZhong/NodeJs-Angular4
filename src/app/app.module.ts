@@ -40,6 +40,7 @@ import { ProfileComponent } from './profile';
 import { LoginComponent } from './login'
 import { RegisteComponent } from './registe'
 import {GoodsComponent} from './goods/goods.component'
+import {AddGoodsComponent} from './addGoods/addGoods.component'
 //import { angularProfileCard } from '../../components/main-profile/index';
 import { NoContentComponent } from './no-content';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -73,7 +74,8 @@ type StoreType = {
     NoContentComponent,
     LoginComponent,
     RegisteComponent,
-    GoodsComponent
+    GoodsComponent,
+    AddGoodsComponent
   ],
   /**
    * Import Angular's modules.

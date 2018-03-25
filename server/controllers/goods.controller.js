@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
 import config from '../config/config';
+import { getUserId } from './auth.controller'
 /**
  * Load user and append to req.
  */
@@ -31,7 +32,11 @@ function get(req, res) {
  */
 function create(req, res, next) {
   const good = new Good({
-      name: req.body.name
+      name: req.body.name,
+      seller: getUserId(req),
+      description: req.body.description,
+      price: req.body.price,
+      imgSrc: req.body.imgSrc
   });
 
   good.save()
@@ -48,6 +53,9 @@ function create(req, res, next) {
 function update(req, res, next) {
   const good = req.good;
   good.name = req.good.name;
+  good.description = req.good.description;
+  good.price = req.good.price;
+  good.imgSrc = req.good.imgSrc;
 
   good.save()
     .then(savedUser => res.json(savedUser))
@@ -61,8 +69,13 @@ function update(req, res, next) {
  * @returns {User[]}
  */
 function list(req, res, next) {
-  const { name = undefined, limit = 50 } = req.query;
-  Good.list({ name, skip })
+  const { type = 0, limit = 50 } = req.query;
+
+  if (!getUserId(req)) {
+    next(new Error("not logined"))
+  }
+  let user_id = getUserId(req);
+  Good.list({ type, limit, user_id})
     .then(goods => res.json(goods))
     .catch(e => next(e));
 }
@@ -86,5 +99,4 @@ function profile(req, res, next) {
     })
   }
 }
-
 export default { load, get, create, update, list, remove, profile };
