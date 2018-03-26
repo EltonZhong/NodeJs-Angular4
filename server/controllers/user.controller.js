@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
 import config from '../config/config';
+import {getUserId} from './auth.controller'
 /**
  * Load user and append to req.
  */
@@ -143,4 +144,29 @@ function removeFromCart(req, res, next) {
   }
 }
 
-export default { load, get, create, update, list, remove, profile, addToCart , cart, removeFromCart};
+function checkout(req, res, next) {
+  User.getCart(getUserId(req)).then(user => {
+    console.log(user);
+    let money = 0;
+    user.cart.forEach(good => {
+      if (good.status == 0) {
+        return;
+      }
+      money += good.price;
+      good.status = 0;
+      good.soldAt = Date.now();
+      good.buyer = user._id;
+      good.save(console.log)
+      good.seller.money += good.price;
+      good.seller.save(console.log)
+    })
+    user.money -= money;
+    user.cart = [];
+    user.save().then((e) => {
+      console.log(e)
+      res.json(user)
+    }).catch(e => {next(e)})
+  }).catch(e => next(e))
+}
+
+export default { load, get, create, update, list, remove, profile, addToCart , cart, removeFromCart, checkout };

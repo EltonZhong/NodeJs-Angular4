@@ -71,7 +71,7 @@ export class CartComponent implements OnInit {
           this.goodsList = va;
           this.goodsList.forEach(good => {
             good.href = '/goods/' + good._id;
-            good.status = good.status==1? "onSale": "Sold to" + good.buyer.username
+            good.status = good.status==1? "onSale": "Sold to: " + good.buyer.username
             this.money += good.price;
           })
         // get new data
@@ -97,6 +97,20 @@ export class CartComponent implements OnInit {
         alert("success")
       },
       error: () => { }
+    })
+  }
+
+  checkout() {
+    this.http.patch("/api/users/checkout", {
+      
+    }).subscribe({
+      next: (resp: any) => {
+        console.log(this.goodsList);
+        this.route.navigate(['profile']);
+      },
+      error: () => {
+        alert('checkout failed')
+      }
     })
   }
 

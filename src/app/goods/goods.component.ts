@@ -69,7 +69,7 @@ export class GoodsComponent implements OnInit {
           this.goodsList = va;
           this.goodsList.forEach(good => {
             good.href = '/goods/' + good._id;
-            good.status = good.status==1? "onSale": "Sold to" + good.buyer.username
+            good.status = good.status==1? "onSale": "Sold to: " + good.buyer.username
           })
           // get new data
         }, error: (errors) => {

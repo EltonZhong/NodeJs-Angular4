@@ -97,6 +97,18 @@ GoodSchema.statics = {
         return this.find({ "name": name }).exec()
     },
 
+    superget(id) {
+        return this.findById(id).populate('seller').populate('buyer')
+        .exec()
+        .then((user) => {
+            if (user) {
+                return user;
+            }
+            const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
+            return Promise.reject(err);
+        });
+    },
+
     /**
      * List users in descending order of 'createdAt' timestamp.
      * @param {number} skip - Number of users to be skipped.

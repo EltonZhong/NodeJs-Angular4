@@ -24,6 +24,12 @@ function get(req, res) {
   return res.json(req.good);
 }
 
+function superget(req, res) {
+  return Good.superget(req.good._id).then((e) => {
+    res.json(e)
+  })
+}
+
 /**
  * Create new user
  * @property {string} req.body.username - The username of user.
@@ -99,4 +105,4 @@ function profile(req, res, next) {
     })
   }
 }
-export default { load, get, create, update, list, remove, profile };
+export default { load, get, create, update, list, remove, profile , superget};

@@ -43,7 +43,11 @@ const UserSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     default: [],
     ref: "Good"
-  }]
+  }],
+  money: {
+    type: Number,
+    default: 1000
+  }
 });
 
 /**
@@ -81,7 +85,10 @@ UserSchema.statics = {
   },
 
   getCart(id) {
-    return this.findById(id).populate("cart")
+    return this.findById(id).populate({
+      path: "cart",
+      populate: [{path: 'buyer'}, {path: 'seller'}]
+    })
       .exec()
       .then((user) => {
         if (user) {

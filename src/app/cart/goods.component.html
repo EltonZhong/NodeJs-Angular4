@@ -22,7 +22,7 @@
                             <div class="media">
                                 <a class="thumbnail pull-left mar" href="#"> <img class="media-object" [attr.src]="good.imgSrc" style="width: 72px; height: 72px;" onerror="if (this.src != '../../assets/img/pac-404.png') this.src = '../../assets/img/pac-404.png';"> </a>
                                 <div class="media-body">
-                                    <h4 class="media-heading"><a href="#">{{good.name}}</a></h4>
+                                    <h4 class="media-heading"><a [attr.href]="good.href">{{good.name}}</a></h4>
                                     <h5 class="media-heading"> by <a [attr.href]="good.seller.email">{{good.seller.username}}</a></h5>
                                     <span>Status: </span><span class="text-success"><strong>{{good.status}}</strong></span>
                                 </div>
@@ -42,21 +42,21 @@
                             <td>   </td>
                             <td>   </td>
                             <td><h5>Subtotal</h5></td>
-                            <td class="text-right"><h5><strong>{{money}}</strong></h5></td>
+                            <td class="text-right"><h5><strong>${{money}}</strong></h5></td>
                         </tr>
                         <tr>
                             <td>   </td>
                             <td>   </td>
                             <td>   </td>
                             <td><h5>Estimated shipping</h5></td>
-                            <td class="text-right"><h5><strong>$5</strong></h5></td>
+                            <td class="text-right"><h5><strong>$0</strong></h5></td>
                         </tr>
                         <tr>
                             <td>   </td>
                             <td>   </td>
                             <td>   </td>
                             <td><h3>Total</h3></td>
-                            <td class="text-right"><h3><strong>{{money+5}}</strong></h3></td>
+                            <td class="text-right"><h3><strong>${{money}}</strong></h3></td>
                         </tr>
                         <tr>
                             <td>   </td>
@@ -67,7 +67,7 @@
                                 <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
                             </button></td>
                             <td>
-                            <button type="button" class="btn btn-success">
+                            <button type="button" class="btn btn-success" (click)="checkout()">
                                 Checkout <span class="glyphicon glyphicon-play"></span>
                             </button></td>
                         </tr>

@@ -17,6 +17,7 @@ router.route('/cart').get(userCtrl.cart)
 router.route("/addToCart")
   .patch(userCtrl.addToCart)
 router.route("/removeFromCart").patch(userCtrl.removeFromCart)
+router.route("/checkout").patch(userCtrl.checkout)
 router.route('/:userId')
   /** GET /api/users/:userId - Get user */
   .get(userCtrl.get)

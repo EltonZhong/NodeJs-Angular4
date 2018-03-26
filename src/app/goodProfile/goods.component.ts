@@ -7,12 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+/**
+ * goods page for seller
+ */
 @Component({
-  selector: 'profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  selector: 'goods',
+  templateUrl: './goods.component.html',
+  styleUrls: ['./goods.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class GoodProfileComponent implements OnInit {
   currentProfile: any;
   http: HttpClient
   state: AppState;
@@ -22,11 +25,12 @@ export class ProfileComponent implements OnInit {
   form: FormGroup;
   disabled: boolean;
   route: Router;
-  goodsList: any;
+  goodsList: Array<any>;
+  good: any
 
   constructor(
     http: HttpClient,
-    cookies:CookieService,
+    cookies: CookieService,
     state: AppState,
     formBuilder: FormBuilder,
     route: Router
@@ -37,7 +41,7 @@ export class ProfileComponent implements OnInit {
     this.http = http;
     this.form = formBuilder.group({
       userName: ['', [
-          Validators.required,
+        Validators.required,
       ]],
       description: ['', [
         Validators.required
@@ -47,26 +51,17 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    const FETCH_TYPE = {
+      "BOUGHT": 0,
+      "SELL": 1,
+      "ALL_ON_SALE": 2
+    }
+    let id = this.route.url.match(/^(.+)\/(.+)$/)[2];
+    console.log(this.route)
     this.disabled = true;
     this.buttonContent = "Edit";
     this.isEditMode = false;
-    this.http.get("/api/users/profile", {
-    })
-      .subscribe({
-          next: (va: any) => {
-              if (!va) {
-                this.route.navigate(["/login"]);
-              }
-              // get new data
-              this.state.set("loginStatus", va.status);
-              this.state.set("username", va.username)
-              this.currentProfile = va;
-          }, error: (errors) => {
-              console.log('there was an error sending the query', errors);
-              console.log("login failed")
-          }
-    });
-    this.http.get("/api/goods?type=0", {
+    this.http.get(`/api/goods/${id}`, {
     })
       .subscribe({
         next: (va: any) => {
@@ -74,11 +69,12 @@ export class ProfileComponent implements OnInit {
             this.route.navigate(["/login"]);
           }
           console.log(va);
-          this.goodsList = va;
+          this.goodsList = [va];
           this.goodsList.forEach(good => {
             good.href = '/goods/' + good._id;
             good.status = good.status==1? "onSale": "Sold to: " + good.buyer.username
           })
+          this.good = this.goodsList[0];
           // get new data
         }, error: (errors) => {
           console.log('there was an error sending the query', errors);
@@ -87,31 +83,22 @@ export class ProfileComponent implements OnInit {
       });
 
   }
-
-  clickBtn(username, email, description) {
-    username = username.trim();
-    this.isEditMode = !this.isEditMode;
-    this.buttonContent = this.isEditMode? "Submit": "Edit";
+  addToCart(_id) {
     if (!this.isEditMode) {
-      this.currentProfile.description = description;
-      let needRefresh = this.currentProfile.username !== username;
-      this.currentProfile.username = username;
-      this.currentProfile.email = email
-      console.log(this.currentProfile)
-      this.http.put("/api/users/" + this.currentProfile._id, this.currentProfile).subscribe({
-        next: (resp) => {
+      this.http.patch("/api/users/addToCart", {_id: _id}).subscribe({
+        next: (resp: any) => {
           console.log(resp);
-          if (needRefresh) {
-            this.route.navigate(["/login"]);
-          }
+          this.goodsList.forEach(good => {
+            if (resp.cart.includes(good._id)) {
+              good.isFavorite = true;
+            } else {
+              good.isFavorite = false;
+            }
+          })
+          alert("add to cart success")
         },
-        error: () => {
-          alert('Edit failed, username might have be used');
-          this.route.navigate(["/profile"])
-        }
+        error: () => { }
       })
-
     }
   }
-  
 }

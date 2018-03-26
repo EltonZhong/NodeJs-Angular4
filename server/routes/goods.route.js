@@ -16,7 +16,7 @@ router.route('/profile').get(goodCtrl.profile)
 
 router.route('/:goodId')
   /** GET /api/users/:userId - Get user */
-  .get(goodCtrl.get)
+  .get(goodCtrl.superget)
 
   /** PUT /api/users/:userId - Update user */
   .put(goodCtrl.update)

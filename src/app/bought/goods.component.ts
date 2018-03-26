@@ -7,12 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+/**
+ * goods page for seller
+ */
 @Component({
-  selector: 'profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  selector: 'goods',
+  templateUrl: './goods.component.html',
+  styleUrls: ['./goods.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class BoughtComponent implements OnInit {
   currentProfile: any;
   http: HttpClient
   state: AppState;
@@ -22,11 +25,11 @@ export class ProfileComponent implements OnInit {
   form: FormGroup;
   disabled: boolean;
   route: Router;
-  goodsList: any;
+  goodsList: Array<any>;
 
   constructor(
     http: HttpClient,
-    cookies:CookieService,
+    cookies: CookieService,
     state: AppState,
     formBuilder: FormBuilder,
     route: Router
@@ -37,7 +40,7 @@ export class ProfileComponent implements OnInit {
     this.http = http;
     this.form = formBuilder.group({
       userName: ['', [
-          Validators.required,
+        Validators.required,
       ]],
       description: ['', [
         Validators.required
@@ -47,25 +50,14 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    const FETCH_TYPE = {
+      "BOUGHT": 0,
+      "SELL": 1,
+      "ALL_ON_SALE": 2
+    }
     this.disabled = true;
     this.buttonContent = "Edit";
     this.isEditMode = false;
-    this.http.get("/api/users/profile", {
-    })
-      .subscribe({
-          next: (va: any) => {
-              if (!va) {
-                this.route.navigate(["/login"]);
-              }
-              // get new data
-              this.state.set("loginStatus", va.status);
-              this.state.set("username", va.username)
-              this.currentProfile = va;
-          }, error: (errors) => {
-              console.log('there was an error sending the query', errors);
-              console.log("login failed")
-          }
-    });
     this.http.get("/api/goods?type=0", {
     })
       .subscribe({
@@ -91,7 +83,7 @@ export class ProfileComponent implements OnInit {
   clickBtn(username, email, description) {
     username = username.trim();
     this.isEditMode = !this.isEditMode;
-    this.buttonContent = this.isEditMode? "Submit": "Edit";
+    this.buttonContent = this.isEditMode ? "Submit" : "Edit";
     if (!this.isEditMode) {
       this.currentProfile.description = description;
       let needRefresh = this.currentProfile.username !== username;
@@ -105,13 +97,8 @@ export class ProfileComponent implements OnInit {
             this.route.navigate(["/login"]);
           }
         },
-        error: () => {
-          alert('Edit failed, username might have be used');
-          this.route.navigate(["/profile"])
-        }
+        error: () => { }
       })
-
     }
   }
-  
 }

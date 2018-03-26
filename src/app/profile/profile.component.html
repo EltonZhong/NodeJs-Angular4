@@ -15,6 +15,7 @@
         <input class="name" #email value="{{currentProfile.email}}" [attr.disabled]="!isEditMode ? '' : null">
         <label class="btn btn-xs btn-default btn-primary ma">Name :</label>
         <input class="name" #username value="{{currentProfile.username}}" [attr.disabled]="!isEditMode ? '' : null">
+        <div>Balance： ${{currentProfile.money}}</div>
         <div class="separateName"></div>
         <label>description:</label>
         <textarea class="description" #description [attr.disabled]="isEditMode?null:''">
@@ -24,42 +25,10 @@
 </form>
 <div class="container" class="col-md-8">
     <div class="page-header text-center">
-        <h1 id="timeline">Timeline 2.0</h1>
+        <h1 id="timeline">Shopping Timeline</h1>
     </div>
-    <ul class="timeline">
-        <li>
-            <div class="timeline-badge primary">
-                <a>
-                    <i class="glyphicon glyphicon-record" rel="tooltip" title="11 hours ago via Twitter" id=""></i>
-                </a>
-            </div>
-            <div class="timeline-panel">
-                <div class="timeline-heading">
-                    <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
-
-                </div>
-                <div class="timeline-body">
-                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris,
-                        paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis
-                        mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris
-                        qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis
-                        eu num gostis.</p>
-
-                </div>
-
-                <div class="timeline-footer">
-                    <a>
-                        <i class="glyphicon glyphicon-thumbs-up"></i>
-                    </a>
-                    <a>
-                        <i class="glyphicon glyphicon-share"></i>
-                    </a>
-                    <a class="pull-right">Continuar Lendo</a>
-                </div>
-            </div>
-        </li>
-
-        <li class="timeline-inverted">
+    <ul class="timeline" style ="height: 70vh; overflow: scroll;">
+        <li [class]="i%2==0?'timeline-inverted': ''" *ngFor="let good of goodsList; let i=index">
             <div class="timeline-badge primary">
                 <a>
                     <i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i>
@@ -67,16 +36,14 @@
             </div>
             <div class="timeline-panel">
                 <div class="timeline-heading">
-                    <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" />
-
+                    <!-- <img class="img-responsive" src="http://lorempixel.com/1600/500/sports/2" /> -->
+                    <img class="img-responsive" [attr.src]="good.imgSrc"  onerror="if (this.src != '../../assets/img/pac-404.png') this.src = '../../assets/img/pac-404.png';"> 
                 </div>
                 <div class="timeline-body">
-                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris,
-                        paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis
-                        mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris
-                        qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis
-                        eu num gostis.</p>
-
+                    <p>{{good.name}}</p>
+                    <p>{{good.description}}</p>
+                    <p>${{good.price}}</p>
+                    <p>Bought at: {{good.soldAt}}</p>
                 </div>
 
                 <div class="timeline-footer">
@@ -86,7 +53,6 @@
                     <a>
                         <i class="glyphicon glyphicon-share"></i>
                     </a>
-                    <a class="pull-right">Continuar Lendo</a>
                 </div>
             </div>
         </li>

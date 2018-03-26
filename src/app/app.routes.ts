@@ -11,6 +11,8 @@ import { AddGoodsComponent } from './addGoods';
 import { DataResolver } from './app.resolver';
 import { MarketComponent } from './market/goods.component'
 import { CartComponent } from './cart/goods.component'
+import {BoughtComponent} from './bought/goods.component'
+import { GoodProfileComponent } from './goodProfile/goods.component'
 
 export const ROUTES: Routes = [
   { path: '', component: HomeComponent },
@@ -24,5 +26,7 @@ export const ROUTES: Routes = [
   { path: 'market', component: MarketComponent },
   { path: 'cart', component: CartComponent },
   { path: 'goods', component: GoodsComponent },
+  { path: 'goods/:id', component: GoodProfileComponent },
+  { path: 'bought', component: BoughtComponent},
   { path: '**', component: NoContentComponent },
 ];
