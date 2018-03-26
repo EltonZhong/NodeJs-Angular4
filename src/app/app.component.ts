@@ -33,7 +33,7 @@ import { CookieService } from 'ngx-cookie-service';
         <a class="links" [routerLink]="['/market']">Market</a>
         <a class="links" [routerLink]="['/cart']">Cart</a>
         <a class="links" [routerLink]="['/bought']">Bought</a>
-        <a class="links" href="/api/graphql">GraphQL browser</a>
+        <a class="links" [routerLink]="['/admin']">Admin</a>
       </mat-toolbar>
     </header>
     <router-outlet></router-outlet>

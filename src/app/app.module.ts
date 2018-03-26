@@ -47,6 +47,7 @@ import {MarketComponent} from './market/goods.component'
 import {CartComponent} from './cart/goods.component'
 import { BoughtComponent } from './bought/goods.component'
 import { GoodProfileComponent } from './goodProfile/goods.component'
+import { AdminComponent } from './admin/goods.component'
 //import { angularProfileCard } from '../../components/main-profile/index';
 import { NoContentComponent } from './no-content';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -85,7 +86,8 @@ type StoreType = {
     MarketComponent,
     CartComponent,
     BoughtComponent,
-    GoodProfileComponent
+    GoodProfileComponent,
+    AdminComponent
   ],
   /**
    * Import Angular's modules.
