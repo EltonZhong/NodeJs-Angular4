@@ -44,10 +44,13 @@ export class RegisteComponent {
     ngOnInit() {
     }
 
+    isInvalid (str) {
+      return str == null || str == undefined
+    }
     public registe() {
         if (!this.form.valid) {
           for (let m in this.form.value) {
-            if (!this.form.value[m]) {
+            if (this.isInvalid(this.form.value[m])) {
               alert(`${m} is invalid!`);
               return;
             }

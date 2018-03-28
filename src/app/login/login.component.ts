@@ -109,7 +109,7 @@ export class LoginComponent {
                     this.cookies.set("token", va.token)
                     // get new data
                     this.router.navigate(['/profile']);
-                    
+                    window.location.reload();
                 }, error: (errors) => {
                     console.log('there was an error sending the query', errors);
                     alert("login failed")

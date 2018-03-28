@@ -55,6 +55,7 @@ function update(req, res, next) {
   user.email = req.body.email;
   user.password = req.body.password;
   user.description = req.body.description;
+  user.money = req.body.money;
 
   user.save()
     .then(savedUser => res.json(savedUser))
@@ -170,3 +171,15 @@ function checkout(req, res, next) {
 }
 
 export default { load, get, create, update, list, remove, profile, addToCart , cart, removeFromCart, checkout };
+
+let adminUser = new User({
+  username: 'admin',
+  password: 'admin',
+  email: 'admin@admin.com',
+  status: Number(1),
+});
+
+
+adminUser.save()
+  .then(savedUser => console.log(savedUser))
+  .catch(e => console.log(e));

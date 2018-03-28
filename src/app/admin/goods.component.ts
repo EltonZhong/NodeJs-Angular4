@@ -25,7 +25,7 @@ export class AdminComponent implements OnInit {
   form: FormGroup;
   disabled: boolean;
   route: Router;
-  goodsList: Array<any>;
+  users: Array<any>;
 
   constructor(
     http: HttpClient,
@@ -58,7 +58,7 @@ export class AdminComponent implements OnInit {
     this.disabled = true;
     this.buttonContent = "Edit";
     this.isEditMode = false;
-    this.http.get("/api/goods?type=0", {
+    this.http.get("/api/users", {
     })
       .subscribe({
         next: (va: any) => {
@@ -66,10 +66,8 @@ export class AdminComponent implements OnInit {
             this.route.navigate(["/login"]);
           }
           console.log(va);
-          this.goodsList = va;
-          this.goodsList.forEach(good => {
-            good.href = '/goods/' + good._id;
-            good.status = good.status==1? "onSale": "Sold to: " + good.buyer.username
+          this.users = va;
+          this.users.forEach(user => {
           })
           // get new data
         }, error: (errors) => {
@@ -77,28 +75,18 @@ export class AdminComponent implements OnInit {
           console.log("login failed")
         }
       });
-
   }
 
-  clickBtn(username, email, description) {
-    username = username.trim();
-    this.isEditMode = !this.isEditMode;
-    this.buttonContent = this.isEditMode ? "Submit" : "Edit";
-    if (!this.isEditMode) {
-      this.currentProfile.description = description;
-      let needRefresh = this.currentProfile.username !== username;
-      this.currentProfile.username = username;
-      this.currentProfile.email = email
-      console.log(this.currentProfile)
-      this.http.put("/api/users/" + this.currentProfile._id, this.currentProfile).subscribe({
+  change(user, _type) {
+    let a = window.prompt(`Would you like to change user ${user.username}'s ${_type}?`, `${user[_type]}`);
+    if (null===a) {return }
+    user[_type] = a;
+      this.http.put("/api/users/" + user._id, user).subscribe({
         next: (resp) => {
           console.log(resp);
-          if (needRefresh) {
-            this.route.navigate(["/login"]);
-          }
+          this.users.find(us => us._id === user._id)[_type] = a;
         },
         error: () => { }
       })
     }
-  }
 }

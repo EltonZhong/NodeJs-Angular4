@@ -27,13 +27,13 @@ import { CookieService } from 'ngx-cookie-service';
         <a [routerLink]="['/']" class="logotTxt">Shopping!</a>
         <a class="links" [routerLink]="['/login']">login</a>
         <a class="links" [routerLink]="['/registe']">registe</a>
-        <a class="links" [routerLink]="['/goods']">goods</a>
+        <a class="links" *ngIf="user.status!=3" [routerLink]="['/goods']">My goods on sale</a>
         <a class="links" [routerLink]="['/profile']">profile</a>
-        <a class="links" [routerLink]="['/addGoods']">Add goods!</a>
-        <a class="links" [routerLink]="['/market']">Market</a>
+        <a class="links" *ngIf="user.status!=3" [routerLink]="['/addGoods']">Add goods!</a>
+        <a class="links"  [routerLink]="['/market']">Market</a>
         <a class="links" [routerLink]="['/cart']">Cart</a>
         <a class="links" [routerLink]="['/bought']">Bought</a>
-        <a class="links" [routerLink]="['/admin']">Admin</a>
+        <a class="links" *ngIf="user.status==1" [routerLink]="['/admin']">Admin</a>
       </mat-toolbar>
     </header>
     <router-outlet></router-outlet>
@@ -44,8 +44,9 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AppComponent implements OnInit {
   public angularclassLogo = 'assets/img/angularclass-avatar.png';
-  public name = 'Mean stack starter';
-  public url = 'https://mean.io';
+  public name = 'test';
+  public url = 'https://127.0.0.1:3000';
+  public user = {status: 3};
 
   constructor(
     public appState: AppState,
@@ -66,6 +67,7 @@ export class AppComponent implements OnInit {
     })
       .subscribe({
           next: (va: any) => {
+              this.user = va;
               console.log(va)
               // get new data
               this.appState.set("loginStatus", va.status);
