@@ -54,7 +54,7 @@
     "server:prod:ci": "http-server dist -p 3000 -c-1 --cors",
     "server": "npm run server:dev",
     "start:hmr": "npm run server:dev:hmr",
-    "start": "npm run server:dev && nodemon --watch server server-start.js ",
+    "start": "NODE_ENV=development && npm run server:dev && nodemon --watch server server-start.js ",
     "start:prod": "NODE_ENV=production node server-start.js",
     "test": "npm run lint && karma start",
     "tslint": "tslint",
